@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Tutorial_1._1___Hello_Window</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Silk.Net.Input" Version="2.20.0" />
+    <PackageReference Include="Silk.Net.OpenGL" Version="2.20.0" />
+    <PackageReference Include="Silk.Net.Windowing" Version="2.20.0" />
+  </ItemGroup>
+
+</Project>

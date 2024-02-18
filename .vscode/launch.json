@@ -1,0 +1,140 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Tutorial 1.1 - Hello Window",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 1.1 - Hello Window.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 1.1 - Hello Window/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 1.2 - Hello quad",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 1.2 - Hello quad.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 1.2 - Hello quad/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 1.3 - Textures",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 1.3 - Textures.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 1.3 - Textures/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 1.4 - Abstractions",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 1.4 - Abstractions.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 1.4 - Abstractions/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 1.5 - Transformations",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 1.5 - Transformations.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 1.5 - Transformations/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 2.1 - Co-ordinate Systems",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 2.1 - Co-ordinate Systems.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 2.1 - Co-ordinate Systems/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 2.2 - Camera",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 2.2 - Camera.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 2.2 - Camera/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 3.1 - Ambient Lighting",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 3.1 - Ambient Lighting.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 3.1 - Ambient Lighting/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 3.2 - Diffuse Lighting",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 3.2 - Diffuse Lighting.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 3.2 - Diffuse Lighting/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 3.3 - Specular Lighting",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 3.3 - Specular Lighting.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 3.3 - Specular Lighting/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 3.4 - Materials",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 3.4 - Materials.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 3.4 - Materials/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Tutorial 3.5 - Lighting Maps",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: solution",
+            "program": "bin/Debug/net8.0/Tutorial 3.5 - Lighting Maps.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Silk.NET/Tutorial 3.5 - Lighting Maps/",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+	"tasks": [
+		{
+			"type": "msbuild",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build",
+			"label": "Build: solution",
+			"detail": "Build the OpenGl-FSharp.sln solution using dotnet build"
+		}
+	]
+}

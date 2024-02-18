@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Tutorial_1._4___Abstractions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="src/BufferObject.fs" />
+    <Compile Include="src/VertexArrayObject.fs" />
+    <Compile Include="src/Texture.fs" />
+    <Compile Include="src/Shader.fs" />
+    <Compile Include="src/Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Silk.Net.Input" Version="2.20.0" />
+    <PackageReference Include="Silk.Net.OpenGL" Version="2.20.0" />
+    <PackageReference Include="Silk.Net.Windowing" Version="2.20.0" />
+    <PackageReference Include="StbImageSharp" Version="2.27.13" />
+  </ItemGroup>
+  
+</Project>
