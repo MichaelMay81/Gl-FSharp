@@ -111,10 +111,6 @@ let onMouseMove (model:Model) (position:Vector2) : Model =
             LastMousePosition = Some position
             Camera = { model.Camera with Yaw=yaw; Pitch=pitch }}
 
-let private setUniform name value shader =
-    shader |> Option.iter (Shaders.setUniform name value >> printError)
-    shader
-
 let private projMatrix (model:Model) =
     Matrix4x4.CreatePerspectiveFieldOfView (
         model.Zoom |> degreesToRadians,
@@ -123,51 +119,50 @@ let private projMatrix (model:Model) =
         100f )
 
 let renderLampCube (model:Model) =
-    model.LampShaderOpt |> Option.iter Shaders.useProgram
+    let shader func = model.LampShaderOpt |> Option.iter func
+    let shaderWerror func = shader (func >> printError)
+    
+    shader <| Shaders.useProgram
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
         * Matrix4x4.CreateTranslation model.LampPosition
 
-    model.LampShaderOpt
-    |> setUniform "uModel" (lampMatrix |> Shaders.M4)
-    |> setUniform "uView" (model.Camera |> Cameras.viewMatrix |> Shaders.M4)
-    |> setUniform "uProjection" (model |> projMatrix |> Shaders.M4)
-    |> setUniform "color" (Vector3.One |> Shaders.V3)
-    |> ignore
-    
+    shaderWerror <| Shaders.setUniformMat4 "uModel" lampMatrix
+    shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
+    shaderWerror <| Shaders.setUniformMat4 "uProjection" (model |> projMatrix)
+    shaderWerror <| Shaders.setUniformVec3 "color" Vector3.One
+
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
         0,
         vertices |> Array.length |> uint)
 
 let RenderLitCube (model:Model) =
-    model.LightingShaderOpt |> Option.iter Shaders.useProgram
+    let shader func = model.LightingShaderOpt |> Option.iter func
+    let shaderWerror func = shader (func >> printError)
+    
+    shader <| Shaders.useProgram
 
     model.DiffuseMapOpt |> Option.iter Textures.bindSlot0
     model.SpecularMapOpt |> Option.iter (Textures.bind TextureUnit.Texture1)
 
     //Setting a uniform.
-    model.LightingShaderOpt
-    // |> setUniform "uModel" (25f |> degreesToRadians |> Matrix4x4.CreateRotationY |> Shaders.M4)
-    |> setUniform "uModel" (Matrix4x4.Identity |> Shaders.M4)
-    |> setUniform "uView" (model.Camera |> Cameras.viewMatrix |> Shaders.M4)
-    |> setUniform "uProjection" (model |> projMatrix |> Shaders.M4)
-    |> setUniform "viewPos" (model.Camera.Position |> Shaders.V3)
-    |> setUniform "material.diffuse" (0 |> Shaders.Int)
-    |> setUniform "material.specular" (1 |> Shaders.Int)
-    |> setUniform "material.shininess" (32f |> Shaders.Float)
-    |> ignore
+    shaderWerror <| Shaders.setUniformMat4 "uModel" Matrix4x4.Identity
+    shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
+    shaderWerror <| Shaders.setUniformMat4 "uProjection" (model |> projMatrix)
+    shaderWerror <| Shaders.setUniformVec3 "viewPos" (model.Camera.Position)
+    shaderWerror <| Shaders.setUniformInt "material.diffuse" 0
+    shaderWerror <| Shaders.setUniformInt "material.specular" 1
+    shaderWerror <| Shaders.setUniformFloat "material.shininess" 32f
     
     let diffuseColor = Vector3 0.5f
     let ambientColor = diffuseColor * Vector3 0.2f
 
-    model.LightingShaderOpt
-    |> setUniform "light.ambient" (ambientColor |> Shaders.V3)
-    |> setUniform "light.diffuse" (diffuseColor |> Shaders.V3)
-    |> setUniform "light.specular" (Vector3.One |> Shaders.V3)
-    |> setUniform "light.position" (model.LampPosition |> Shaders.V3)
-    |> ignore
+    shaderWerror <| Shaders.setUniformVec3 "light.ambient" ambientColor
+    shaderWerror <| Shaders.setUniformVec3 "light.diffuse" diffuseColor
+    shaderWerror <| Shaders.setUniformVec3 "light.specular" Vector3.One
+    shaderWerror <| Shaders.setUniformVec3 "light.position" model.LampPosition
 
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,

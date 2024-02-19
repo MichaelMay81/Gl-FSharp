@@ -10,11 +10,6 @@ type Shader = {
     Gl: GL }
 
 module Shaders =
-    type UniformType =
-    | Float of float32
-    | Int of int
-    | M4 of Matrix4x4
-    | V3 of Vector3
 
     let (|IsNullOrWhiteSpace|SomeString|) (str : string) =
         if str |> String.IsNullOrWhiteSpace
@@ -44,22 +39,28 @@ module Shaders =
     let dispose (shader:Shader) : unit =
         shader.Gl.DeleteProgram shader.Handle
 
-    let setUniform (name:string) (value:UniformType) (shader:Shader) : Result<unit, string> =
-        match shader.Gl.GetUniformLocation (shader.Handle, name), value with
-        | -1, _ ->
+    let private getUniformLocation (shader:Shader) (name:string) : Result<int, string> =
+        match shader.Gl.GetUniformLocation (shader.Handle, name) with
+        | -1 ->
             Error $"{name} uniform not found on shader."
-        | location, Float value ->
-            shader.Gl.Uniform1 (location, value)
-            Ok ()
-        | location, Int value ->
-            shader.Gl.Uniform1 (location, value) 
-            Ok ()
-        | location, M4 value ->
-            shader.Gl.UniformMatrix4 (location, 1u, false, &value.M11)
-            Ok ()
-        | location, V3 value ->
-            shader.Gl.Uniform3 (location, value.X, value.Y, value.Z)
-            Ok ()
+        | location ->
+            Ok location
+
+    let setUniformFloat (name:string) (value:float32) (shader:Shader) : Result<unit, string> =
+        getUniformLocation shader name
+        |> Result.map (fun location -> shader.Gl.Uniform1 (location, value))
+
+    let setUniformInt (name:string) (value:int) (shader:Shader) : Result<unit, string> =
+        getUniformLocation shader name
+        |> Result.map (fun location -> shader.Gl.Uniform1 (location, value))
+
+    let setUniformMat4 (name:string) (value:Matrix4x4) (shader:Shader) : Result<unit, string> =
+        getUniformLocation shader name
+        |> Result.map (fun location -> shader.Gl.UniformMatrix4 (location, 1u, false, &value.M11))
+
+    let setUniformVec3 (name:string) (value:Vector3) (shader:Shader) : Result<unit, string> =
+        getUniformLocation shader name
+        |> Result.map (fun location -> shader.Gl.Uniform3 (location, value.X, value.Y, value.Z))
 
     let useProgram (shader:Shader) =
         shader.Gl.UseProgram shader.Handle

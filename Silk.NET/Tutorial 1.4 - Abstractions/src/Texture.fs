@@ -13,12 +13,12 @@ module Textures =
     let dispose (texture:Texture) =
         texture.Gl.DeleteTexture texture.Handle
 
-    let bind (texture:Texture) (textureSlot:TextureUnit) =
+    let bind (textureSlot:TextureUnit) (texture:Texture) =
         texture.Gl.ActiveTexture textureSlot
         texture.Gl.BindTexture (TextureTarget.Texture2D, texture.Handle)
 
     let bindSlot0 (texture:Texture) =
-        bind texture TextureUnit.Texture0
+        bind TextureUnit.Texture0 texture
 
     let SetParameters (gl:GL) =
         gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) GLEnum.ClampToEdge)
@@ -59,5 +59,6 @@ module Textures =
             create gl (ReadOnlySpan<byte> image.Data) (uint image.Width) (uint image.Height)
             |> Ok
         with
-        | :? FileNotFoundException as ex ->
+        | :? FileNotFoundException
+        | :? DirectoryNotFoundException as ex ->
             Error ex.Message
