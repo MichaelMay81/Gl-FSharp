@@ -20,7 +20,6 @@ type Model = {
     vao: VertexArrayObject
     LightingShader: Shader
     LampShader: Shader
-    LampPosition: Vector3
 
     DiffuseMap: Texture
     SpecularMap: Texture
@@ -118,6 +117,13 @@ let private projMatrix (model:Model) =
         0.1f,
         100f )
 
+let lampPosition (startTime: DateTime) =
+    let difference = float32 (DateTime.UtcNow - startTime).TotalSeconds
+    let interval = MathF.Sin difference
+    Vector3.Transform (
+            Vector3 (0f, 0.5f, 2f),
+            Matrix4x4.CreateRotationY interval)
+
 let renderLampCube (model:Model) =
     let shaderWerror func = model.LampShader |> func |> printError
     
@@ -125,7 +131,7 @@ let renderLampCube (model:Model) =
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
-        * Matrix4x4.CreateTranslation model.LampPosition
+        * Matrix4x4.CreateTranslation (lampPosition model.StartTime)
 
     shaderWerror <| Shaders.setUniformMat4 "uModel" lampMatrix
     shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
@@ -160,7 +166,7 @@ let RenderLitCube (model:Model) =
     shaderWerror <| Shaders.setUniformVec3 "light.ambient" ambientColor
     shaderWerror <| Shaders.setUniformVec3 "light.diffuse" diffuseColor
     shaderWerror <| Shaders.setUniformVec3 "light.specular" Vector3.One
-    shaderWerror <| Shaders.setUniformVec3 "light.position" model.LampPosition
+    shaderWerror <| Shaders.setUniformVec3 "light.position" (lampPosition model.StartTime)
 
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
@@ -199,14 +205,7 @@ let onUpdate (model:Model) (deltaTime:float) : Model =
         |> ifKeyIsPressed Key.A -MoveRight
         |> ifKeyIsPressed Key.D MoveRight
 
-    let lampPosition = //model.LampPosition
-        Vector3.Transform (
-            model.LampPosition,
-            Matrix4x4.CreateRotationY 0.01f)
-
-    { model with
-        Camera = { model.Camera with Position = cameraPosition }
-        LampPosition = lampPosition }
+    { model with Camera = { model.Camera with Position = cameraPosition } }
 
 
 let onLoad (window:IWindow) : Model option =
@@ -250,7 +249,6 @@ let onLoad (window:IWindow) : Model option =
                 vao = vao
                 LightingShader = lightingShader
                 LampShader = lampShader
-                LampPosition = Vector3 (1.2f, 0.5f, 2f)
                 DiffuseMap = diffuseMap
                 SpecularMap = specularMap
                 Camera = camera
