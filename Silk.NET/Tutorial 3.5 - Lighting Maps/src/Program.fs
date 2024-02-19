@@ -19,11 +19,11 @@ type Model = {
     vbo: BufferObject<float32>
     vao: VertexArrayObject
     LightingShader: Shader
-    LampShaderOpt: Shader option
+    LampShader: Shader
     LampPosition: Vector3
 
-    DiffuseMapOpt: Texture option
-    SpecularMapOpt: Texture option
+    DiffuseMap: Texture
+    SpecularMap: Texture
 
     Camera: Camera
     Zoom: float32
@@ -85,9 +85,9 @@ let onClose (model:Model) =
     model.vbo |> BufferObjects.dispose
     model.vao |> VertexArrayObjects.dispose
     model.LightingShader |> Shaders.dispose
-    model.LampShaderOpt |> Option.iter Shaders.dispose
-    model.DiffuseMapOpt |> Option.iter Textures.dispose
-    model.SpecularMapOpt |> Option.iter Textures.dispose
+    model.LampShader |> Shaders.dispose
+    model.DiffuseMap |> Textures.dispose
+    model.SpecularMap |> Textures.dispose
 
 let OnMouseWheel (model:Model) (scrollWheel:ScrollWheel) : Model =
     { model with Zoom = Math.Clamp (model.Zoom - scrollWheel.Y, 1f, 45f) }
@@ -119,10 +119,9 @@ let private projMatrix (model:Model) =
         100f )
 
 let renderLampCube (model:Model) =
-    let shader func = model.LampShaderOpt |> Option.iter func
-    let shaderWerror func = shader (func >> printError)
+    let shaderWerror func = model.LampShader |> func |> printError
     
-    shader <| Shaders.useProgram
+    model.LampShader |> Shaders.useProgram
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
@@ -143,8 +142,8 @@ let RenderLitCube (model:Model) =
     
     model.LightingShader |> Shaders.useProgram
 
-    model.DiffuseMapOpt |> Option.iter Textures.bindSlot0
-    model.SpecularMapOpt |> Option.iter (Textures.bind TextureUnit.Texture1)
+    model.DiffuseMap |> Textures.bindSlot0
+    model.SpecularMap |> (Textures.bind TextureUnit.Texture1)
 
     //Setting a uniform.
     shaderWerror <| Shaders.setUniformMat4 "uModel" Matrix4x4.Identity
@@ -243,17 +242,17 @@ let onLoad (window:IWindow) : Model option =
     let diffuseMapOpt = Textures.createFromFile gl "../Assets/silkBoxed.png" |> resultToOption
     let specularMapOpt = Textures.createFromFile gl "../Assets/silkSpecular.png" |> resultToOption
 
-    match lightingShaderOpt with
-    | Some lightingShader ->
+    match lightingShaderOpt, lampShaderOpt, diffuseMapOpt, specularMapOpt with
+    | Some lightingShader, Some lampShader, Some diffuseMap, Some specularMap ->
         Some {  Window = window
                 Gl = gl
                 vbo = vbo
                 vao = vao
                 LightingShader = lightingShader
-                LampShaderOpt = lampShaderOpt
+                LampShader = lampShader
                 LampPosition = Vector3 (1.2f, 0.5f, 2f)
-                DiffuseMapOpt = diffuseMapOpt
-                SpecularMapOpt = specularMapOpt
+                DiffuseMap = diffuseMap
+                SpecularMap = specularMap
                 Camera = camera
                 Zoom = 45f
                 Width = window.Size.X
