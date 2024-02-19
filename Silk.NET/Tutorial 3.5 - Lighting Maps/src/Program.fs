@@ -18,7 +18,7 @@ type Model = {
 
     vbo: BufferObject<float32>
     vao: VertexArrayObject
-    LightingShaderOpt: Shader option
+    LightingShader: Shader
     LampShaderOpt: Shader option
     LampPosition: Vector3
 
@@ -84,7 +84,7 @@ let keyDown (window:IWindow) (_:IKeyboard) (key:Key) (_:int) =
 let onClose (model:Model) =
     model.vbo |> BufferObjects.dispose
     model.vao |> VertexArrayObjects.dispose
-    model.LightingShaderOpt |> Option.iter Shaders.dispose
+    model.LightingShader |> Shaders.dispose
     model.LampShaderOpt |> Option.iter Shaders.dispose
     model.DiffuseMapOpt |> Option.iter Textures.dispose
     model.SpecularMapOpt |> Option.iter Textures.dispose
@@ -139,10 +139,9 @@ let renderLampCube (model:Model) =
         vertices |> Array.length |> uint)
 
 let RenderLitCube (model:Model) =
-    let shader func = model.LightingShaderOpt |> Option.iter func
-    let shaderWerror func = shader (func >> printError)
+    let shaderWerror func = model.LightingShader |> func |> printError
     
-    shader <| Shaders.useProgram
+    model.LightingShader |> Shaders.useProgram
 
     model.DiffuseMapOpt |> Option.iter Textures.bindSlot0
     model.SpecularMapOpt |> Option.iter (Textures.bind TextureUnit.Texture1)
@@ -211,7 +210,7 @@ let onUpdate (model:Model) (deltaTime:float) : Model =
         LampPosition = lampPosition }
 
 
-let onLoad (window:IWindow) : Model =
+let onLoad (window:IWindow) : Model option =
     let inputContext = window.CreateInput ()
     let keyboard = inputContext.Keyboards.FirstOrDefault ()
     let mouse = inputContext.Mice.FirstOrDefault ()
@@ -244,23 +243,34 @@ let onLoad (window:IWindow) : Model =
     let diffuseMapOpt = Textures.createFromFile gl "../Assets/silkBoxed.png" |> resultToOption
     let specularMapOpt = Textures.createFromFile gl "../Assets/silkSpecular.png" |> resultToOption
 
-    {   Window = window
-        Gl = gl
-        vbo = vbo
-        vao = vao
-        LightingShaderOpt = lightingShaderOpt
-        LampShaderOpt = lampShaderOpt
-        LampPosition = Vector3 (1.2f, 0.5f, 2f)
-        DiffuseMapOpt = diffuseMapOpt
-        SpecularMapOpt = specularMapOpt
-        Camera = camera
-        Zoom = 45f
-        Width = window.Size.X
-        Height = window.Size.Y
-        Keyboard = keyboard
-        Mouse = mouse
-        LastMousePosition = None
-        StartTime = DateTime.UtcNow }
+    match lightingShaderOpt with
+    | Some lightingShader ->
+        Some {  Window = window
+                Gl = gl
+                vbo = vbo
+                vao = vao
+                LightingShader = lightingShader
+                LampShaderOpt = lampShaderOpt
+                LampPosition = Vector3 (1.2f, 0.5f, 2f)
+                DiffuseMapOpt = diffuseMapOpt
+                SpecularMapOpt = specularMapOpt
+                Camera = camera
+                Zoom = 45f
+                Width = window.Size.X
+                Height = window.Size.Y
+                Keyboard = keyboard
+                Mouse = mouse
+                LastMousePosition = None
+                StartTime = DateTime.UtcNow }
+    | _ ->
+        vbo |> BufferObjects.dispose
+        vao |> VertexArrayObjects.dispose
+        lightingShaderOpt |> Option.iter Shaders.dispose
+        lampShaderOpt |> Option.iter Shaders.dispose
+        diffuseMapOpt |> Option.iter Textures.dispose
+        specularMapOpt |> Option.iter Textures.dispose
+
+        None
 
 let onFramebufferResize (gl:GL) (size:Vector2D<int>) =
     gl.Viewport (0, 0, uint size.X, uint size.Y)
@@ -274,16 +284,20 @@ let main _ =
     use window = Window.Create options
 
     window.add_Load (fun _ ->
-        let mutable model = onLoad window
-        
-        model.Keyboard.add_KeyDown (keyDown window)
-        model.Mouse.add_MouseMove (fun _ pos -> model <- onMouseMove model pos)
-        model.Mouse.add_Scroll (fun _ scrollWheel -> model <- OnMouseWheel model scrollWheel)
+        match onLoad window with
+        | Some model ->
+            let mutable model = model
 
-        window.add_Update (fun deltaTime -> model <- onUpdate model deltaTime)
-        window.add_Render (onRender model)
-        window.add_Closing (fun _ -> onClose model)
-        window.add_FramebufferResize (onFramebufferResize model.Gl))
+            model.Keyboard.add_KeyDown (keyDown window)
+            model.Mouse.add_MouseMove (fun _ pos -> model <- onMouseMove model pos)
+            model.Mouse.add_Scroll (fun _ scrollWheel -> model <- OnMouseWheel model scrollWheel)
+
+            window.add_Update (fun deltaTime -> model <- onUpdate model deltaTime)
+            window.add_Render (onRender model)
+            window.add_Closing (fun _ -> onClose model)
+            window.add_FramebufferResize (onFramebufferResize model.Gl)
+        | None ->
+            window.Close () )
     
     window.Run ()
     window.Dispose ()
