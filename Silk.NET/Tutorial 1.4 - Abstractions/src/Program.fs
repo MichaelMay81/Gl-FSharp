@@ -8,36 +8,25 @@ open Silk.NET.Input
 type Model = {
     Window : IWindow
     Gl : GL
+    Keyboard: IKeyboard
 
+    //Our new abstracted objects, here we specify what the types are.
     vbo : BufferObject<float32>
     ebo : BufferObject<uint>
     vao : VertexArrayObject
 
-    Texture : Texture option
-    ShaderOpt : Shader option}
+    Texture : Texture
+    Shader : Shader}
 
-// The quad vertices data.
 let private vertices = [|
     0.5f;  0.5f; 0.0f; 1.0f; 1.0f
     0.5f; -0.5f; 0.0f; 1.0f; 0.0f
     -0.5f; -0.5f; 0.0f; 0.0f; 0.0f
     -0.5f;  0.5f; 0.0f; 0.0f; 1.0f |]
 
-// The quad indices data.
 let private indices = [|
     0u; 1u; 3u
     1u; 2u; 3u |]
-
-let private resultToOption = function
-    | Error error ->
-        printfn "Error: %s" error
-        None
-    | Ok value ->
-        Some value
-
-let private printError =
-    Result.mapError (printfn "Error: %s")
-    >> ignore
 
 let keyDown (window:IWindow) (_:IKeyboard) (key:Key) (_:int) =
     match key with
@@ -46,41 +35,41 @@ let keyDown (window:IWindow) (_:IKeyboard) (key:Key) (_:int) =
     | _ -> ()
 
 let onClose (model:Model) =
+    //Remember to dispose all the instances.
     model.vbo |> BufferObjects.dispose
     model.ebo |> BufferObjects.dispose
     model.vao |> VertexArrayObjects.dispose
-    model.ShaderOpt |> Option.iter Shaders.dispose
-    model.Texture |> Option.iter Textures.dispose
+    model.Shader |> Shaders.dispose
+    model.Texture |> Textures.dispose
 
 let onRender (model:Model) (deltaTime:float) =
     model.Gl.Clear ClearBufferMask.ColorBufferBit
 
     //Binding and using our VAO and shader.
     model.vao |> VertexArrayObjects.bind
-    model.ShaderOpt |> Option.iter Shaders.useProgram
+    model.Shader |> Shaders.useProgram
 
-    model.Texture |> Option.iter Textures.bindSlot0
+    model.Texture |> Textures.bindSlot0
 
     //Setting a uniform.
-    model.ShaderOpt |> Option.iter (
-        Shaders.setUniform "uTexture" (Shaders.Int 0)
-        >> printError)
+    model.Shader
+    |> Shaders.setUniformInt "uTexture" 0
+    |> printError
 
     model.Gl.DrawElements (PrimitiveType.Triangles, 6u, DrawElementsType.UnsignedInt, IntPtr.Zero.ToPointer ())
 
-
-let onLoad (window:IWindow) : Model =
+let onLoad (window:IWindow) : Model option =
     let inputContext = window.CreateInput ()
-    inputContext.Keyboards
-    |> Seq.iter (fun keyboard ->
-        keyboard.add_KeyDown (keyDown window))
+    let keyboard = inputContext.Keyboards |> Seq.head
 
     let gl = GL.GetApi window
 
+    //Instantiating our new abstractions
     let ebo = BufferObjects.createUInt gl BufferTargetARB.ElementArrayBuffer indices
     let vbo = BufferObjects.createFloat gl BufferTargetARB.ArrayBuffer vertices   
-    let vao = VertexArrayObjects.create gl vbo ebo
+    let vao = VertexArrayObjects.create gl vbo (Some ebo)
     
+    //Telling the VAO object how to lay out the attribute pointers
     vao |> VertexArrayObjects.vertexAttributePointer 0u 3u 5u 0u
     vao |> VertexArrayObjects.vertexAttributePointer 1u 2u 5u 3u
 
@@ -88,20 +77,27 @@ let onLoad (window:IWindow) : Model =
         Shaders.create gl "src/shader.vert" "src/shader.frag"
         |> resultToOption
 
-    let texture =
-        Textures.createFromFile gl "../Assests/silk.png"
+    let textureOpt =
+        Textures.createFromFile gl "../Assets/silk.png"
         |> resultToOption
 
-    {   Window = window
-        Gl = gl
-        vbo = vbo
-        ebo = ebo
-        vao = vao
-        ShaderOpt = shaderOpt
-        Texture = texture }
-
-let onFramebufferResize (gl:GL) (size:Vector2D<int>) =
-    gl.Viewport (0, 0, uint size.X, uint size.Y)
+    match shaderOpt, textureOpt with
+    | Some shader, Some texture ->
+        Some {  Window = window
+                Gl = gl
+                Keyboard = keyboard
+                vbo = vbo
+                ebo = ebo
+                vao = vao
+                Shader = shader
+                Texture = texture }
+    | _ ->
+        vbo |> BufferObjects.dispose
+        ebo |> BufferObjects.dispose
+        vao |> VertexArrayObjects.dispose
+        shaderOpt |> Option.iter Shaders.dispose
+        textureOpt |> Option.iter Textures.dispose
+        None
 
 [<EntryPoint>]
 let main _ =
@@ -111,11 +107,13 @@ let main _ =
     use window = Window.Create options
 
     window.add_Load (fun _ ->
-        let model = onLoad window
-        
-        window.add_Render (onRender model)
-        window.add_Closing (fun _ -> onClose model)
-        window.add_FramebufferResize (onFramebufferResize model.Gl))
+        match onLoad window with
+        | Some model ->
+            model.Keyboard.add_KeyDown (keyDown window)
+            window.add_Render (onRender model)
+            window.add_Closing (fun _ -> onClose model)
+        | None ->
+            window.Close () )
     
     window.Run ()
     window.Dispose ()

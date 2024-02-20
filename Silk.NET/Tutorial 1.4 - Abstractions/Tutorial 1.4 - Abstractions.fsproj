@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="src/Helpers.fs" />
     <Compile Include="src/BufferObject.fs" />
     <Compile Include="src/VertexArrayObject.fs" />
     <Compile Include="src/Texture.fs" />
