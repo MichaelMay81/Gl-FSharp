@@ -11,20 +11,17 @@ type Shader = {
 
 module Shaders =
 
-    let (|IsNullOrWhiteSpace|SomeString|) (str : string) =
+    let private (|IsNullOrWhiteSpace|SomeString|) (str : string) =
         if str |> String.IsNullOrWhiteSpace
         then IsNullOrWhiteSpace
         else SomeString str
     
     let private loadShader (gl:GL) (shaderType:ShaderType) (path:string) : Result<uint, string> =
-        let srcOpt =
-            try
-                File.ReadAllText path |> Ok
-            with
-            | :? FileNotFoundException as ex ->
-                Error ex.Message
-
-        srcOpt
+        try
+            File.ReadAllText path |> Ok
+        with
+        | :? FileNotFoundException as ex ->
+            Error ex.Message
         |> Result.bind (fun src ->
             let handle = gl.CreateShader shaderType
             gl.ShaderSource (handle, src)

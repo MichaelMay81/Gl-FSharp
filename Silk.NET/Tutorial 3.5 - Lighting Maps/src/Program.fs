@@ -1,11 +1,11 @@
-﻿open System.Numerics
-open System.Linq
+﻿open System
+open System.Numerics
 open Silk.NET.Maths
 open Silk.NET.Windowing
-open Silk.NET.OpenGL
-open Tutorial1_4_Abstractions
 open Silk.NET.Input
-open System
+open Silk.NET.OpenGL
+
+open Tutorial1_4_Abstractions
 
 type Model = {
     Window: IWindow
@@ -25,8 +25,11 @@ type Model = {
     SpecularMap: Texture
 
     Camera: Camera
-    Zoom: float32
+
+    //Used to track change in mouse movement to allow for moving of the Camera
     LastMousePosition: Vector2 option
+
+    //Track when the window started so we can use the time elapsed for animations
     StartTime: DateTime }
 
 // The quad vertices data.
@@ -89,7 +92,7 @@ let onClose (model:Model) =
     model.SpecularMap |> Textures.dispose
 
 let OnMouseWheel (model:Model) (scrollWheel:ScrollWheel) : Model =
-    { model with Zoom = Math.Clamp (model.Zoom - scrollWheel.Y, 1f, 45f) }
+    { model with Camera = model.Camera |> Cameras.modifyZoom scrollWheel.Y }
 
 let onMouseMove (model:Model) (position:Vector2) : Model =
     let lookSensitivity = 0.1f
@@ -100,24 +103,11 @@ let onMouseMove (model:Model) (position:Vector2) : Model =
         let xOffset = (position.X - lastMousePosition.X) * lookSensitivity
         let yOffset = (position.Y - lastMousePosition.Y) * lookSensitivity
 
-        let yaw = model.Camera.Yaw + xOffset
-        let pitch = model.Camera.Pitch - yOffset
-        
-        let yaw = Math.Clamp (yaw, -100f, -80f)
-        let pitch = Math.Clamp (pitch, -10f, 10f)
-
         { model with
             LastMousePosition = Some position
-            Camera = { model.Camera with Yaw=yaw; Pitch=pitch }}
+            Camera = model.Camera |> Cameras.modifyDirection xOffset yOffset }
 
-let private projMatrix (model:Model) =
-    Matrix4x4.CreatePerspectiveFieldOfView (
-        model.Zoom |> degreesToRadians,
-        (float32 model.Width) / (float32 model.Height),
-        0.1f,
-        100f )
-
-let lampPosition (startTime: DateTime) =
+let private lampPosition (startTime: DateTime) =
     let difference = float32 (DateTime.UtcNow - startTime).TotalSeconds
     let interval = MathF.Sin difference
     Vector3.Transform (
@@ -128,6 +118,8 @@ let renderLampCube (model:Model) =
     let shaderWerror func = model.LampShader |> func |> printError
     
     model.LampShader |> Shaders.useProgram
+
+    //The Lamp cube is going to be a scaled down version of the normal cubes verticies moved to a different screen location
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
@@ -135,28 +127,33 @@ let renderLampCube (model:Model) =
 
     shaderWerror <| Shaders.setUniformMat4 "uModel" lampMatrix
     shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
-    shaderWerror <| Shaders.setUniformMat4 "uProjection" (model |> projMatrix)
-    shaderWerror <| Shaders.setUniformVec3 "color" Vector3.One
+    shaderWerror <| Shaders.setUniformMat4 "uProjection" (model.Camera |> Cameras.projectionMatrix model.Width model.Height)
 
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
         0,
-        vertices |> Array.length |> uint)
+        36u)
 
 let RenderLitCube (model:Model) =
     let shaderWerror func = model.LightingShader |> func |> printError
     
     model.LightingShader |> Shaders.useProgram
 
+    //Bind the diffuse map and and set to use texture0.
     model.DiffuseMap |> Textures.bindSlot0
+    //Bind the specular map and and set to use texture1.
     model.SpecularMap |> (Textures.bind TextureUnit.Texture1)
 
-    //Setting a uniform.
+    //Setup the coordinate systems for our view
     shaderWerror <| Shaders.setUniformMat4 "uModel" Matrix4x4.Identity
     shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
-    shaderWerror <| Shaders.setUniformMat4 "uProjection" (model |> projMatrix)
+    shaderWerror <| Shaders.setUniformMat4 "uProjection" (model.Camera |> Cameras.projectionMatrix model.Width model.Height)
+    //Let the shaders know where the Camera is looking from
     shaderWerror <| Shaders.setUniformVec3 "viewPos" (model.Camera.Position)
+    //Configure the materials variables.
+    //Diffuse is set to 0 because our diffuseMap is bound to Texture0
     shaderWerror <| Shaders.setUniformInt "material.diffuse" 0
+    //Specular is set to 1 because our diffuseMap is bound to Texture1
     shaderWerror <| Shaders.setUniformInt "material.specular" 1
     shaderWerror <| Shaders.setUniformFloat "material.shininess" 32f
     
@@ -168,17 +165,17 @@ let RenderLitCube (model:Model) =
     shaderWerror <| Shaders.setUniformVec3 "light.specular" Vector3.One
     shaderWerror <| Shaders.setUniformVec3 "light.position" (lampPosition model.StartTime)
 
+    //We're drawing with just vertices and no indicies, and it takes 36 verticies to have a six-sided textured cube
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
         0,
-        vertices |> Array.length |> uint)
+        36u)
 
 let onRender (model:Model) (deltaTime:float) =
     model.Gl.Clear
         (ClearBufferMask.ColorBufferBit |||
         ClearBufferMask.DepthBufferBit)
     
-    //Binding and using our VAO and shader.
     model.vao |> VertexArrayObjects.bind
     
     RenderLitCube model
@@ -210,8 +207,8 @@ let onUpdate (model:Model) (deltaTime:float) : Model =
 
 let onLoad (window:IWindow) : Model option =
     let inputContext = window.CreateInput ()
-    let keyboard = inputContext.Keyboards.FirstOrDefault ()
-    let mouse = inputContext.Mice.FirstOrDefault ()
+    let keyboard = inputContext.Keyboards |> Seq.head
+    let mouse = inputContext.Mice |> Seq.head
     //mouse.Cursor.CursorMode <- CursorMode.Raw
     
     let gl = GL.GetApi window
@@ -224,19 +221,23 @@ let onLoad (window:IWindow) : Model option =
     vao |> VertexArrayObjects.vertexAttributePointer 1u 3u 8u 3u
     vao |> VertexArrayObjects.vertexAttributePointer 2u 2u 8u 6u
 
+    //The lighting shader will give our main cube its colour multiplied by the light's intensity
     let lightingShaderOpt =
         Shaders.create gl "src/shader.vert" "src/lighting.frag"
         |> resultToOption
 
+    //The Lamp shader uses a fragment shader that just colours it solid white so that we know it is the light source
     let lampShaderOpt =
         Shaders.create gl "src/shader.vert" "src/shader.frag"
         |> resultToOption
 
+    //Start a camera at position 6 on the Z axis
     let camera =
         { Position= Vector3.UnitZ * 6f
           Up= Vector3.UnitY
           Yaw= -90f
-          Pitch= 0f }
+          Pitch= 0f
+          Zoom = 45f}
 
     let diffuseMapOpt = Textures.createFromFile gl "../Assets/silkBoxed.png" |> resultToOption
     let specularMapOpt = Textures.createFromFile gl "../Assets/silkSpecular.png" |> resultToOption
@@ -252,7 +253,6 @@ let onLoad (window:IWindow) : Model option =
                 DiffuseMap = diffuseMap
                 SpecularMap = specularMap
                 Camera = camera
-                Zoom = 45f
                 Width = window.Size.X
                 Height = window.Size.Y
                 Keyboard = keyboard
