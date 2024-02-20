@@ -170,7 +170,7 @@ let onLoad (window:IWindow) : Model =
     gl.ActiveTexture TextureUnit.Texture0
     gl.BindTexture (TextureTarget.Texture2D, texture)
 
-    let image = File.ReadAllBytes("../Assests/silk.png")
+    let image = File.ReadAllBytes("../Assets/silk.png")
     let result = ImageResult.FromMemory (image, ColorComponents.RedGreenBlueAlpha)
     gl.TexImage2D (
         TextureTarget.Texture2D,

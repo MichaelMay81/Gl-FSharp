@@ -98,7 +98,7 @@ let onLoad (window:IWindow) : Model =
         |> resultToOption
 
     let texture =
-        Textures.createFromFile gl "../Assests/silk.png"
+        Textures.createFromFile gl "../Assets/silk.png"
         |> resultToOption
 
     {   Window = window
