@@ -1,15 +1,17 @@
-namespace Tutorial1_4_Abstractions
+namespace Tutorial2_1_Co_ordinate_Systems
 
 open System.Numerics
 
 type Camera = {
     Position: Vector3
     Target: Vector3 }
-    with static member init =
-            { Position=Vector3 (0f, 0f, 3f)
-              Target=Vector3.Zero }
 
 module Cameras =
+    //Setup the camera's location, and where it should look.
+    let init =
+        { Position=Vector3 (0f, 0f, 3f)
+          Target=Vector3.Zero }
+
     let direction (camera:Camera) =
         camera.Position - camera.Target
         |> Vector3.Normalize
@@ -24,9 +26,3 @@ module Cameras =
         Vector3.Cross (
             camera |> direction,
             camera |> right )
-
-    let viewMatrix (camera:Camera) =
-        Matrix4x4.CreateLookAt (
-            camera.Position,
-            camera.Target,
-            camera |> up)

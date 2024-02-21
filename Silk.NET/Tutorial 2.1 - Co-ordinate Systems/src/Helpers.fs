@@ -1,19 +1,5 @@
 [<AutoOpen>]
-module Tutorial1_4_Abstractions.Heplers
-
-open System
+module Tutorial2_1_Co_ordinate_Systems.Heplers
 
 let degreesToRadians (degrees:float32) =
-    MathF.PI / 180f * degrees
-
-let resultToOption = function
-    | Error error ->
-        printfn "Error: %s" error
-        None
-    | Ok value ->
-        Some value
-
-let printError (result: Result<'T, string>) : unit =
-    result
-    |> Result.mapError (printfn "Error: %s")
-    |> ignore
+    System.MathF.PI / 180f * degrees
