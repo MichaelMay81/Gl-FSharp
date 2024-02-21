@@ -16,20 +16,18 @@ type Model = {
     vbo : BufferObject<float32>
     ebo : BufferObject<uint>
     vao : VertexArrayObject
-
     Texture : Texture
     Shader : Shader
-    
+    //Creating transforms for the transformations
     Transforms : Transform[]}
 
-// The quad vertices data.
 let private vertices = [|
-    0.5f;  0.5f; 0.0f; 1.0f; 0.0f
-    0.5f; -0.5f; 0.0f; 1.0f; 1.0f
-    -0.5f; -0.5f; 0.0f; 0.0f; 1.0f
+    //X    Y      Z     U   V
+     0.5f;  0.5f; 0.0f; 1.0f; 0.0f;
+     0.5f; -0.5f; 0.0f; 1.0f; 1.0f;
+    -0.5f; -0.5f; 0.0f; 0.0f; 1.0f;
     -0.5f;  0.5f; 0.0f; 0.0f; 0.0f |]
 
-// The quad indices data.
 let private indices = [|
     0u; 1u; 3u
     1u; 2u; 3u |]
@@ -50,32 +48,23 @@ let onClose (model:Model) =
 let onRender (model:Model) (deltaTime:float) =
     model.Gl.Clear ClearBufferMask.ColorBufferBit
 
-    //Binding and using our VAO and shader.
     model.vao |> VertexArrayObjects.bind
-    model.Shader |> Shaders.useProgram
-
     model.Texture |> Textures.bindSlot0
+    model.Shader |> Shaders.useProgram
+    let shaderWerror func = model.Shader |> func |> printError
 
-    //Setting a uniform.
-    model.Shader
-    |> Shaders.setUniformInt "uTexture0" 0
-    |> printError
+    Shaders.setUniformInt "uTexture0" 0 |> shaderWerror
     
     model.Transforms
     |> Array.iter (fun transform ->
-        model.Shader
-        |> Shaders.setUniformMat4 "uModel" (transform |> Transforms.viewMatrix) 
-        |> printError
+        //Using the transformations.
+        Shaders.setUniformMat4 "uModel" (transform |> Transforms.viewMatrix) |> shaderWerror
 
         model.Gl.DrawElements (PrimitiveType.Triangles, 6u, DrawElementsType.UnsignedInt, IntPtr.Zero.ToPointer ()) )
-
 
 let onLoad (window:IWindow) : Model option =
     let inputContext = window.CreateInput ()
     let keyboard = inputContext.Keyboards |> Seq.head
-    // inputContext.Keyboards
-    // |> Seq.iter (fun keyboard ->
-    //     keyboard.add_KeyDown (keyDown window))
 
     let gl = GL.GetApi window
 
@@ -94,6 +83,20 @@ let onLoad (window:IWindow) : Model option =
         Textures.createFromFile gl "../Assets/silk.png"
         |> resultToOption
 
+    let transforms =[|
+        //Unlike in the transformation, because of our abstraction, order doesn't matter here.
+        //Translation.
+        { Transforms.init with Position = Vector3 (0.5f,0.5f,0f)}
+        //Rotation.
+        { Transforms.init with Rotation = Quaternion.CreateFromAxisAngle (Vector3.UnitZ, 1f)}
+        //Scaling.
+        { Transforms.init with Scale = 0.5f }
+        //Mixed transformation.
+        { Transforms.init with
+            Position = Vector3 (-0.5f, 0.5f, 0f)
+            Rotation = Quaternion.CreateFromAxisAngle (Vector3.UnitZ, 1f)
+            Scale = 0.5f } |]
+
     match shaderOpt, textureOpt with
     | Some shader, Some texture ->
         Some {  Window = window
@@ -104,14 +107,7 @@ let onLoad (window:IWindow) : Model option =
                 vao = vao
                 Shader = shader
                 Texture = texture
-                Transforms = [|
-                    { Transforms.init with Position = Vector3 (0.5f,0.5f,0f)}
-                    { Transforms.init with Rotation = Quaternion.CreateFromAxisAngle (Vector3.UnitZ, 1f)}
-                    { Transforms.init with Scale = 0.5f }
-                    { Transforms.init with
-                        Position = Vector3 (-0.5f, 0.5f, 0f)
-                        Rotation = Quaternion.CreateFromAxisAngle (Vector3.UnitZ, 1f)
-                        Scale = 0.5f } |]}
+                Transforms = transforms }
     | _ ->
         vbo |> BufferObjects.dispose
         ebo |> BufferObjects.dispose
@@ -120,14 +116,12 @@ let onLoad (window:IWindow) : Model option =
         textureOpt |> Option.iter Textures.dispose
 
         None
-let onFramebufferResize (gl:GL) (size:Vector2D<int>) =
-    gl.Viewport (0, 0, uint size.X, uint size.Y)
 
 [<EntryPoint>]
 let main _ =
     let mutable options = WindowOptions.Default
     options.Size <- Vector2D<int> (800, 600)
-    options.Title <- "1.4 - Abstractions"
+    options.Title <- "1.5 - Transformations"
     use window = Window.Create options
 
     window.add_Load (fun _ ->
@@ -135,7 +129,6 @@ let main _ =
         | Some model ->
             window.add_Render (onRender model)
             window.add_Closing (fun _ -> onClose model)
-            window.add_FramebufferResize (onFramebufferResize model.Gl)
         | None ->
             window.Close () )
     

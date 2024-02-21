@@ -21,6 +21,7 @@ module Transforms =
         Scale = 1f
         Rotation = Quaternion.Identity }
 
+    //Note: The order here does matter.
     let viewMatrix (transform:Transform) =
         Matrix4x4.Identity *
         Matrix4x4.CreateFromQuaternion transform.Rotation*
