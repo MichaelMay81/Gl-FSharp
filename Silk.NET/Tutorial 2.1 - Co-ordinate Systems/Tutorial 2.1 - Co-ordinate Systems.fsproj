@@ -19,8 +19,8 @@
     <PackageReference Include="StbImageSharp" Version="2.27.13" />
   </ItemGroup>
     
-    <ItemGroup>
-      <ProjectReference Include="..\Tutorial 1.4 - Abstractions\Tutorial 1.4 - Abstractions.fsproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tutorial 1.4 - Abstractions\Tutorial 1.4 - Abstractions.fsproj" />
+  </ItemGroup>
 
 </Project>

@@ -8,11 +8,6 @@
 
   <ItemGroup>
     <Compile Include="src/Helpers.fs" />
-    <Compile Include="src/BufferObject.fs" />
-    <Compile Include="src/VertexArrayObject.fs" />
-    <Compile Include="src/Texture.fs" />
-    <Compile Include="src/Shader.fs" />
-    <Compile Include="src/Transform.fs" />
     <Compile Include="src/Camera.fs" />
     <Compile Include="src/Program.fs" />
   </ItemGroup>
@@ -24,4 +19,8 @@
     <PackageReference Include="StbImageSharp" Version="2.27.13" />
   </ItemGroup>
   
+  <ItemGroup>
+    <ProjectReference Include="..\Tutorial 1.4 - Abstractions\Tutorial 1.4 - Abstractions.fsproj" />
+  </ItemGroup>
+
 </Project>
