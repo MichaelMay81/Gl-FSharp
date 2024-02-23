@@ -3,7 +3,6 @@ open Silk.NET.Maths
 open Silk.NET.Windowing
 open Silk.NET.OpenGL
 open Silk.NET.Input
-open System
 
 open Tutorial1_4_Abstractions
 open Tutorial2_2_Camera
@@ -23,10 +22,12 @@ type Model = {
     LampShader: Shader
 
     Camera: Camera
+
+    //Used to track change in mouse movement to allow for moving of the Camera
     LastMousePosition: Vector2 option }
 
-// The quad vertices data.
 let private vertices = [|
+    //X    Y      Z
     -0.5f; -0.5f; -0.5f;
      0.5f; -0.5f; -0.5f;
      0.5f;  0.5f; -0.5f;
@@ -93,58 +94,47 @@ let onMouseMove (model:Model) (position:Vector2) : Model =
         let xOffset = (position.X - lastMousePosition.X) * lookSensitivity
         let yOffset = (position.Y - lastMousePosition.Y) * lookSensitivity
 
-        let yaw = model.Camera.Yaw + xOffset
-        let pitch = model.Camera.Pitch - yOffset
-        
-        let yaw = Math.Clamp (yaw, -100f, -80f)
-        let pitch = Math.Clamp (pitch, -10f, 10f)
-
         { model with
             LastMousePosition = Some position
-            Camera = { model.Camera with Yaw=yaw; Pitch=pitch }}
+            Camera = model.Camera |> Cameras.modifyDirection xOffset yOffset }
 
 let onRender (model:Model) (deltaTime:float) =
     model.Gl.Clear
         (ClearBufferMask.ColorBufferBit |||
         ClearBufferMask.DepthBufferBit)
 
-    let lightingShaderWerror func = model.LightingShader |> func |> printError
-    let lampShaderWerror func = model.LampShader |> func |> printError
-
-    let viewMat = model.Camera |> Cameras.viewMatrix
-    let projMat = model.Camera |> Cameras.projectionMatrix model.Width model.Height
-
-    //Binding and using our VAO and shader.
     model.vao |> VertexArrayObjects.bind
     model.LightingShader |> Shaders.useProgram
 
-    //Setting a uniform.
+    //Slightly rotate the cube to give it an angled face to look at
+    let lightingShaderWerror func = model.LightingShader |> func |> printError
     lightingShaderWerror <| Shaders.setUniformMat4 "uModel" (25f |> degreesToRadians |> Matrix4x4.CreateRotationY)
-    lightingShaderWerror <| Shaders.setUniformMat4 "uView" viewMat
-    lightingShaderWerror <| Shaders.setUniformMat4 "uProjection" projMat
+    lightingShaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
+    lightingShaderWerror <| Shaders.setUniformMat4 "uProjection" (model.Camera |> Cameras.projectionMatrix model.Width model.Height)
     lightingShaderWerror <| Shaders.setUniformVec3 "objectColor" (Vector3 (1f, 0.5f, 031f))
     lightingShaderWerror <| Shaders.setUniformVec3 "lightColor" Vector3.One
     
+    //We're drawing with just vertices and no indicies, and it takes 36 verticies to have a six-sided textured cube
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
-        0,
-        vertices |> Array.length |> uint)
+        0, 36u)
 
     model.LampShader |> Shaders.useProgram
+
+    //The Lamp cube is going to be a scaled down version of the normal cubes verticies moved to a different screen location
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
         * Matrix4x4.CreateTranslation (Vector3 (1.2f, 1f, 2f))
 
+    let lampShaderWerror func = model.LampShader |> func |> printError
     lampShaderWerror <| Shaders.setUniformMat4 "uModel" lampMatrix
-    lampShaderWerror <| Shaders.setUniformMat4 "uView" viewMat
-    lampShaderWerror <| Shaders.setUniformMat4 "uProjection" projMat
+    lampShaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
+    lampShaderWerror <| Shaders.setUniformMat4 "uProjection" (model.Camera |> Cameras.projectionMatrix model.Width model.Height)
     
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
-        0,
-        vertices |> Array.length |> uint)
-
+        0, 36u)
 
 let onUpdate (model:Model) (deltaTime:float) : Model =
     let moveSpeed = 2.5f * float32 deltaTime
@@ -184,10 +174,11 @@ let onLoad (window:IWindow) : Model option =
     
     vao |> VertexArrayObjects.vertexAttributePointer 0u 3u 3u 0u
 
+    //The lighting shader will give our main cube its colour multiplied by the lights intensity
     let lightingShaderOpt =
         Shaders.create gl "src/shader.vert" "src/lighting.frag"
         |> resultToOption
-
+    //The Lamp shader uses a fragment shader that just colours it solid white so that we know it is the light source
     let lampShaderOpt =
         Shaders.create gl "src/shader.vert" "src/shader.frag"
         |> resultToOption
