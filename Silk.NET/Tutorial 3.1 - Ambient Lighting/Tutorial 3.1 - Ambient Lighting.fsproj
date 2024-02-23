@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="src/Helpers.fs" />
-    <Compile Include="src/BufferObject.fs" />
-    <Compile Include="src/VertexArrayObject.fs" />
-    <Compile Include="src/Texture.fs" />
-    <Compile Include="src/Shader.fs" />
-    <Compile Include="src/Transform.fs" />
-    <Compile Include="src/Camera.fs" />
     <Compile Include="src/Program.fs" />
   </ItemGroup>
 
@@ -22,6 +15,11 @@
     <PackageReference Include="Silk.Net.OpenGL" Version="2.20.0" />
     <PackageReference Include="Silk.Net.Windowing" Version="2.20.0" />
     <PackageReference Include="StbImageSharp" Version="2.27.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tutorial 1.4 - Abstractions\Tutorial 1.4 - Abstractions.fsproj" />
+    <ProjectReference Include="..\Tutorial 2.2 - Camera\Tutorial 2.2 - Camera.fsproj" />
   </ItemGroup>
   
 </Project>
