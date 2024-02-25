@@ -225,6 +225,7 @@ let onLoad (window:IWindow) : Model =
     
     let gl = GL.GetApi window
     gl.Enable EnableCap.DepthTest
+    gl.ClearColor Drawing.Color.White
 
     let vbo = BufferObjects.createFloat gl BufferTargetARB.ArrayBuffer vertices   
     let vao = VertexArrayObjects.create gl vbo None
