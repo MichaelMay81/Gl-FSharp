@@ -105,6 +105,8 @@ let onMouseMove (model:Model) (position:Vector2) : Model =
             Camera = model.Camera |> Cameras.modifyDirection xOffset yOffset }
 
 let renderLampCube (model:Model) =
+    model.LampShader |> Shaders.useProgram
+
     //The Lamp cube is going to be a scaled down version of the normal cubes verticies moved to a different screen location
     let lampMatrix =
         Matrix4x4.Identity
@@ -131,9 +133,9 @@ let RenderLitCube (model:Model) =
     shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
     shaderWerror <| Shaders.setUniformMat4 "uProjection" (model.Camera |> Cameras.projectionMatrix model.Width model.Width)
     shaderWerror <| Shaders.setUniformVec3 "viewPos" model.Camera.Position
-    shaderWerror <| Shaders.setUniformVec3 "material.ambient" (Vector3 (1f,0.5f,0.31f))
-    shaderWerror <| Shaders.setUniformVec3 "material.diffuse" (Vector3 (1f,0.5f,0.31f))
-    shaderWerror <| Shaders.setUniformVec3 "material.specular" (Vector3 (0.5f,0.5f,0.5f))
+    shaderWerror <| Shaders.setUniformVec3 "material.ambient"  (Vector3 (1f,  0.5f, 0.31f))
+    shaderWerror <| Shaders.setUniformVec3 "material.diffuse"  (Vector3 (1f,  0.5f, 0.31f))
+    shaderWerror <| Shaders.setUniformVec3 "material.specular" (Vector3 (0.5f,0.5f, 0.5f))
     shaderWerror <| Shaders.setUniformFloat "material.shininess" 32f
     
     let diffuseColor = model.LampColor * Vector3 0.5f
@@ -180,23 +182,23 @@ let onUpdate (model:Model) (deltaTime:float) : Model =
         |> ifKeyIsPressed Key.A -MoveRight
         |> ifKeyIsPressed Key.D MoveRight
 
-    let lampPosition = //model.LampPosition
-        Vector3.Transform (
-            model.LampPosition,
-            Matrix4x4.CreateRotationY 0.01f)
-        
     //Track the difference in time so we can manipulate variables as time changes
     let difference = float32 (DateTime.UtcNow - model.StartTime).TotalSeconds
-    let lightColor = Vector3 (
+
+    let lampPosition =
+        Vector3.Transform (
+            Vector3 (0f, 0.5f, 2f),
+            Matrix4x4.CreateRotationY (MathF.Sin difference))
+        
+    let lightColor = Vector3 (//1f, 1f, 1f)
         MathF.Sin (difference * 2f),
-        MathF.Sin (difference * 0.7f),
-        MathF.Sin (difference * 1.3f) )
+        MathF.Sin (difference * 0.7f) ,
+        MathF.Sin (difference * 1.3f))
 
     { model with
         Camera = { model.Camera with Position = cameraPosition }
         LampColor = lightColor
         LampPosition = lampPosition }
-
 
 let onLoad (window:IWindow) : Model option =
     let inputContext = window.CreateInput ()
