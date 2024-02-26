@@ -1,4 +1,4 @@
-namespace Tutorial1_4_Abstractions
+namespace Tutorial2_2_Camera
 
 open System
 open System.Numerics

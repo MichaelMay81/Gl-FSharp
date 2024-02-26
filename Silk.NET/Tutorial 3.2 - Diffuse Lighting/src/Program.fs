@@ -136,8 +136,7 @@ let renderLitCube (model:Model) =
     
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
-        0,
-        vertices |> Array.length |> uint)
+        0, 36u)
 
 let onRender (model:Model) (deltaTime:float) =
     model.Gl.Clear

@@ -5,6 +5,7 @@ open Silk.NET.OpenGL
 open Silk.NET.Input
 
 open Tutorial1_4_Abstractions
+open Tutorial2_2_Camera
 
 type Model = {
     Window: IWindow
