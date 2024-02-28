@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Shader.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="opentk" Version="4.8.2" />
+  </ItemGroup>
+  
+</Project>
