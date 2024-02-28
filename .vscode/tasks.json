@@ -1,13 +1,28 @@
 {
 	"tasks": [
 		{
+			"group": "build",
+			"label": "Build: Silk.NET",
+			"detail": "Build the Silk.NET OpenGl-FSharp.sln solution using dotnet build",
 			"type": "msbuild",
 			"problemMatcher": [
 				"$msCompile"
 			],
+			"options": {
+				"cwd": "Silk.NET"
+			}
+		},
+		{
 			"group": "build",
-			"label": "Build: solution",
-			"detail": "Build the OpenGl-FSharp.sln solution using dotnet build"
+			"label": "Build: OpenTK",
+			"detail": "Build the OpenTK.sln solution using dotnet build",
+			// using process instead of msbuild, because vscode only shows one msbuild and I don´t know why...
+			"type": "process",
+			"command": "dotnet",
+			"args": [ "build" ],
+			"options": {
+				"cwd": "OpenTK"
+			}
 		}
 	]
 }
