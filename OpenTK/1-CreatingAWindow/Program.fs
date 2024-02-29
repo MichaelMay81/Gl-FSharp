@@ -3,30 +3,24 @@ open OpenTK.Windowing.GraphicsLibraryFramework
 open OpenTK.Windowing.Desktop
 open OpenTK.Mathematics
 
-// type Window (gameWindowSettings:GameWindowSettings, nativeWindowSettings:NativeWindowSettings) =
-//     inherit GameWindow (gameWindowSettings, nativeWindowSettings)
-//     override this.OnUpdateFrame (e:FrameEventArgs) =
-//         if this.KeyboardState.IsKeyDown Keys.Escape then
-//             this.Close ()
-//         else
-//             base.OnUpdateFrame e
-
+// This function runs on every update frame.
 let onUpdateFrame (window:GameWindow) (_:FrameEventArgs) =
+    // Check if the Escape button is currently being pressed.
     if window.KeyboardState.IsKeyDown Keys.Escape then
+        // If it is, close the window.
         window.Close ()
-
-let projectName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name
-let title = $"LearnOpenTK - {projectName}"
-printfn $"{title}"
-printfn $"Current directory: {System.IO.Directory.GetCurrentDirectory()}"
 
 let nativeWindowSettings = NativeWindowSettings ()
 nativeWindowSettings.ClientSize <- Vector2i (800, 600)
-nativeWindowSettings.Title <- "LearnOpenTK - Creating a Window"
+nativeWindowSettings.Title <- $"LearnOpenTK - 1 Creating a Window"
+// This is needed to run on macos
 nativeWindowSettings.Flags <- ContextFlags.ForwardCompatible
 
+// To create a new window, initialize a GameWindow, 
 let window = new GameWindow (GameWindowSettings.Default, nativeWindowSettings)
-
+// .. connect the update function
 window.add_UpdateFrame (onUpdateFrame window)
-
+// .. then call Run() on it.
 window.Run ()
+
+// And that's it! That's all it takes to create a window with OpenTK.
