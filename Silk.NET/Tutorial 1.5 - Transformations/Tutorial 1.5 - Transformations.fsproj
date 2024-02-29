@@ -9,6 +9,10 @@
   <ItemGroup>
     <Compile Include="src/Transform.fs" />
     <Compile Include="src/Program.fs" />
+    <Content Include="src/*.vert; src/*.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

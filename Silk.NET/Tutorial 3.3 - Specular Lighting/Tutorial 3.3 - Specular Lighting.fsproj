@@ -7,14 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--Compile Include="src/Helpers.fs" />
-    <Compile Include="src/BufferObject.fs" />
-    <Compile Include="src/VertexArrayObject.fs" />
-    <Compile Include="src/Texture.fs" />
-    <Compile Include="src/Shader.fs" />
-    <Compile Include="src/Transform.fs" />
-    <Compile Include="src/Camera.fs" /-->
     <Compile Include="src/Program.fs" />
+    <Content Include="src/*.vert; src/*.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

@@ -215,7 +215,7 @@ let onLoad (window:IWindow) : Model =
 
     // Use StbImageSharp to load an image from our PNG file.
     // This will load and decompress the result into a raw byte array that we can pass directly into OpenGL.
-    let image = File.ReadAllBytes("../Assets/silk.png")
+    let image = File.ReadAllBytes("silk.png")
     let result = ImageResult.FromMemory (image, ColorComponents.RedGreenBlueAlpha)
     
     // Upload our texture data to the GPU.

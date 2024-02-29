@@ -218,11 +218,11 @@ let onLoad (window:IWindow) : Model option =
 
     //The lighting shader will give our main cube it's colour multiplied by the light's intensity
     let lightingShaderOpt =
-        Shaders.create gl "src/shader.vert" "src/lighting.frag"
+        Shaders.create gl "shader.vert" "lighting.frag"
         |> resultToOption
     //The Lamp shader uses a fragment shader that just colours it solid white so that we know it is the light source
     let lampShaderOpt =
-        Shaders.create gl "src/shader.vert" "src/shader.frag"
+        Shaders.create gl "shader.vert" "shader.frag"
         |> resultToOption
 
     let camera =

@@ -223,12 +223,12 @@ let onLoad (window:IWindow) : Model option =
 
     //The lighting shader will give our main cube its colour multiplied by the light's intensity
     let lightingShaderOpt =
-        Shaders.create gl "src/shader.vert" "src/lighting.frag"
+        Shaders.create gl "shader.vert" "lighting.frag"
         |> resultToOption
 
     //The Lamp shader uses a fragment shader that just colours it solid white so that we know it is the light source
     let lampShaderOpt =
-        Shaders.create gl "src/shader.vert" "src/shader.frag"
+        Shaders.create gl "shader.vert" "shader.frag"
         |> resultToOption
 
     //Start a camera at position 6 on the Z axis
@@ -239,8 +239,8 @@ let onLoad (window:IWindow) : Model option =
           Pitch= 0f
           Zoom = 45f}
 
-    let diffuseMapOpt = Textures.createFromFile gl "../Assets/silkBoxed.png" |> resultToOption
-    let specularMapOpt = Textures.createFromFile gl "../Assets/silkSpecular.png" |> resultToOption
+    let diffuseMapOpt = Textures.createFromFile gl "silkBoxed.png" |> resultToOption
+    let specularMapOpt = Textures.createFromFile gl "silkSpecular.png" |> resultToOption
 
     match lightingShaderOpt, lampShaderOpt, diffuseMapOpt, specularMapOpt with
     | Some lightingShader, Some lampShader, Some diffuseMap, Some specularMap ->

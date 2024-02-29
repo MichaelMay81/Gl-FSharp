@@ -132,11 +132,11 @@ let onLoad (window:IWindow) : Model option =
     vao |> VertexArrayObjects.vertexAttributePointer 1u 2u 5u 3u
 
     let shaderOpt = 
-        Shaders.create gl "src/shader.vert" "src/shader.frag"
+        Shaders.create gl "shader.vert" "shader.frag"
         |> resultToOption
 
     let textureOpt =
-        Textures.createFromFile gl "../Assets/silk.png"
+        Textures.createFromFile gl "silk.png"
         |> resultToOption
 
     match shaderOpt, textureOpt with

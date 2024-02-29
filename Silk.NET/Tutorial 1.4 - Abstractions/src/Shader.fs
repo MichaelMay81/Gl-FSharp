@@ -26,8 +26,9 @@ module Shaders =
         try
             File.ReadAllText path |> Ok
         with
-        | :? FileNotFoundException as ex ->
-            Error ex.Message
+        | :? DirectoryNotFoundException
+        | :? FileNotFoundException ->
+            Error $"Couldn't find shader file at {path}"
         |> Result.bind (fun src ->
             let handle = gl.CreateShader shaderType
             gl.ShaderSource (handle, src)

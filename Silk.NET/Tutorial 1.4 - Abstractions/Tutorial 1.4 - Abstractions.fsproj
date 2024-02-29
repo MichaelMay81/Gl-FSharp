@@ -13,6 +13,13 @@
     <Compile Include="src/Texture.fs" />
     <Compile Include="src/Shader.fs" />
     <Compile Include="src/Program.fs" />
+    <Content Include="src/*.vert; src/*.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+    <Content Include="../Assets/silk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

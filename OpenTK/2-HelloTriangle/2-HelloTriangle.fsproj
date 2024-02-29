@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <Compile Include="Program.fs" />
+    <Content Include="**/*.vert; **/*.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

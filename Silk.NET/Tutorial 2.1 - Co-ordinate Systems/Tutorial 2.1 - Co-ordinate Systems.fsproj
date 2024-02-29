@@ -10,6 +10,10 @@
     <Compile Include="src/Helpers.fs" />
     <Compile Include="src/Camera.fs" />
     <Compile Include="src/Program.fs" />
+    <Content Include="src/*.vert; src/*.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
