@@ -171,6 +171,18 @@
             "stopAtEntry": false,
             "console": "internalConsole",
             "presentation": { "group": "2-OpenTK" }
+        },
+        {
+            "name": "3-ElementBufferObjects",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: OpenTK",
+            "program": "3-ElementBufferObjects.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/OpenTK/3-ElementBufferObjects/bin/Debug/net8.0/",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "presentation": { "group": "2-OpenTK" }
         }
     ]
 }

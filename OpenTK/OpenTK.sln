@@ -9,6 +9,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "2-HelloTriangle", "2-HelloT
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Common", "Common\Common.fsproj", "{2567C539-B09C-459C-B635-24D08392A034}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "3-ElementBufferObjects", "3-ElementBufferObjects\3-ElementBufferObjects.fsproj", "{F1AA64B4-268D-45F4-BCD8-2D0010594A3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{2567C539-B09C-459C-B635-24D08392A034}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2567C539-B09C-459C-B635-24D08392A034}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2567C539-B09C-459C-B635-24D08392A034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1AA64B4-268D-45F4-BCD8-2D0010594A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1AA64B4-268D-45F4-BCD8-2D0010594A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1AA64B4-268D-45F4-BCD8-2D0010594A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1AA64B4-268D-45F4-BCD8-2D0010594A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
