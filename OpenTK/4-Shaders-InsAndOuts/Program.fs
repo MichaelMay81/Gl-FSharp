@@ -6,7 +6,7 @@ open LearnOpenTK
 
 let nativeWindowSettings = NativeWindowSettings ()
 nativeWindowSettings.ClientSize <- Vector2i (800, 600)
-nativeWindowSettings.Title <- "LearnOpenTK - 3 Element Buffer Objects"
+nativeWindowSettings.Title <- "LearnOpenTK - 4 Shaders Ins And Outs"
 // This is needed to run on macos
 nativeWindowSettings.Flags <- ContextFlags.ForwardCompatible
 
