@@ -195,6 +195,18 @@
             "stopAtEntry": false,
             "console": "internalConsole",
             "presentation": { "group": "2-OpenTK" }
+        },
+        {
+            "name": "4-Shaders-MoreAttributes",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: OpenTK",
+            "program": "4-Shaders-MoreAttributes.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/OpenTK/4-Shaders-MoreAttributes/bin/Debug/net8.0/",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "presentation": { "group": "2-OpenTK" }
         }
     ]
 }

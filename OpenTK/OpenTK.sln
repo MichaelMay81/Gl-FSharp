@@ -13,6 +13,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "3-ElementBufferObjects", "3
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "4-Shaders-InsAndOuts", "4-Shaders-InsAndOuts\4-Shaders-InsAndOuts.fsproj", "{3B401D89-E34F-44FF-B6BE-386E6BD0D3DB}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "4-Shaders-MoreAttributes", "4-Shaders-MoreAttributes\4-Shaders-MoreAttributes.fsproj", "{FDB85CA9-7E0C-4FBD-85A2-C8B999F5AB7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{3B401D89-E34F-44FF-B6BE-386E6BD0D3DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B401D89-E34F-44FF-B6BE-386E6BD0D3DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B401D89-E34F-44FF-B6BE-386E6BD0D3DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB85CA9-7E0C-4FBD-85A2-C8B999F5AB7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB85CA9-7E0C-4FBD-85A2-C8B999F5AB7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB85CA9-7E0C-4FBD-85A2-C8B999F5AB7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB85CA9-7E0C-4FBD-85A2-C8B999F5AB7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
