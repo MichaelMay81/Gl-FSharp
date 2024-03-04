@@ -219,6 +219,18 @@
             "stopAtEntry": false,
             "console": "internalConsole",
             "presentation": { "group": "2-OpenTK" }
+        },
+        {
+            "name": "5-Textures",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build: OpenTK",
+            "program": "5-Textures.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/OpenTK/5-Textures/bin/Debug/net8.0/",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "presentation": { "group": "2-OpenTK" }
         }
     ]
 }
