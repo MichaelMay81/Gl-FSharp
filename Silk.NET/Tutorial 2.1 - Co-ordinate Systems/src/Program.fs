@@ -112,7 +112,7 @@ let onRender (model:Model) (deltaTime:float) =
     shaderWerror <| Shaders.setUniformMat4 "uView" viewMat
     shaderWerror <| Shaders.setUniformMat4 "uProjection" projMat
 
-    //We're drawing with just vertices and no indicies, and it takes 36 verticies to have a six-sided textured cube
+    //We're drawing with just vertices and no indices, and it takes 36 vertices to have a six-sided textured cube
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
         0,

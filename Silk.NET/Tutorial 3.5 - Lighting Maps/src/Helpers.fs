@@ -1,5 +1,5 @@
 [<AutoOpen>]
-module Tutorial1_4_Abstractions.Heplers
+module Tutorial1_4_Abstractions.Helpers
 
 open System
 

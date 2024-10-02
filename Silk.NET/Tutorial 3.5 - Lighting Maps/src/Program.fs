@@ -119,7 +119,7 @@ let renderLampCube (model:Model) =
     
     model.LampShader |> Shaders.useProgram
 
-    //The Lamp cube is going to be a scaled down version of the normal cubes verticies moved to a different screen location
+    //The Lamp cube is going to be a scaled down version of the normal cubes vertices moved to a different screen location
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
@@ -139,17 +139,17 @@ let RenderLitCube (model:Model) =
     
     model.LightingShader |> Shaders.useProgram
 
-    //Bind the diffuse map and and set to use texture0.
+    //Bind the diffuse map and set to use texture0.
     model.DiffuseMap |> Textures.bindSlot0
-    //Bind the specular map and and set to use texture1.
+    //Bind the specular map and set to use texture1.
     model.SpecularMap |> (Textures.bind TextureUnit.Texture1)
 
-    //Setup the coordinate systems for our view
+    //Set up the coordinate systems for our view
     shaderWerror <| Shaders.setUniformMat4 "uModel" Matrix4x4.Identity
     shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
     shaderWerror <| Shaders.setUniformMat4 "uProjection" (model.Camera |> Cameras.projectionMatrix model.Width model.Height)
     //Let the shaders know where the Camera is looking from
-    shaderWerror <| Shaders.setUniformVec3 "viewPos" (model.Camera.Position)
+    shaderWerror <| Shaders.setUniformVec3 "viewPos" model.Camera.Position
     //Configure the materials variables.
     //Diffuse is set to 0 because our diffuseMap is bound to Texture0
     shaderWerror <| Shaders.setUniformInt "material.diffuse" 0

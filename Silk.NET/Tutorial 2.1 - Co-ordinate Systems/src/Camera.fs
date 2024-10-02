@@ -7,7 +7,7 @@ type Camera = {
     Target: Vector3 }
 
 module Cameras =
-    //Setup the camera's location, and where it should look.
+    //Set up the camera's location, and where it should look.
     let init =
         { Position=Vector3 (0f, 0f, 3f)
           Target=Vector3.Zero }

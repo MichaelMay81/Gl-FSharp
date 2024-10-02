@@ -11,7 +11,7 @@ type Texture = {
 
 module Textures =
     let dispose (texture:Texture) =
-        //In order to dispose we need to delete the opengl handle for the texure.
+        //In order to dispose we need to delete the opengl handle for the texture.
         texture.Gl.DeleteTexture texture.Handle
 
     let bind (textureSlot:TextureUnit) (texture:Texture) =
@@ -23,11 +23,11 @@ module Textures =
         bind TextureUnit.Texture0 texture
 
     let SetParameters (gl:GL) =
-        //Setting some texture perameters so the texture behaves as expected.
-        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) GLEnum.ClampToEdge)
-        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) GLEnum.ClampToEdge)
-        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) GLEnum.LinearMipmapLinear)
-        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) GLEnum.Linear)
+        //Setting some texture parameters so the texture behaves as expected.
+        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureWrapS, int GLEnum.ClampToEdge)
+        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureWrapT, int GLEnum.ClampToEdge)
+        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, int GLEnum.LinearMipmapLinear)
+        gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, int GLEnum.Linear)
         gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0)
         gl.TexParameter (TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 8)
 

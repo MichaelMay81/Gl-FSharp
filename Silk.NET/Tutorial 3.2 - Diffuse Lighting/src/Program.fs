@@ -105,13 +105,13 @@ let renderLampCube (model:Model) =
     //Use the 'main' shader that does not do any lighting calculations to just draw the cube to screen in the requested colours.
     model.LampShader |> Shaders.useProgram
 
-    //The Lamp cube is going to be a scaled down version of the normal cubes verticies moved to a different screen location
+    //The Lamp cube is going to be a scaled down version of the normal cubes vertices moved to a different screen location
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
         * Matrix4x4.CreateTranslation model.LampPosition
 
-    //Setup the uniforms needed to draw the Lamp in the correct place on screen
+    //Set up the uniforms needed to draw the Lamp in the correct place on screen
     shaderWerror <| Shaders.setUniformMat4 "uModel" lampMatrix
     shaderWerror <| Shaders.setUniformMat4 "uView" (model.Camera |> Cameras.viewMatrix)
     shaderWerror <| Shaders.setUniformMat4 "uProjection" (model.Camera |> Cameras.projectionMatrix model.Width model.Height)

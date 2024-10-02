@@ -101,7 +101,7 @@ let onMouseMove (model:Model) (position:Vector2) : Model =
 let renderLampCube (model:Model) =
     model.LampShader |> Shaders.useProgram
 
-    //The Lamp cube is going to be a scaled down version of the normal cubes verticies moved to a different screen location
+    //The Lamp cube is going to be a scaled down version of the normal cubes vertices moved to a different screen location
     let lampMatrix =
         Matrix4x4.Identity
         * Matrix4x4.CreateScale 0.2f
@@ -130,7 +130,7 @@ let RenderLitCube (model:Model) =
     shaderWerror <| Shaders.setUniformVec3 "lightPos" model.LampPosition
     shaderWerror <| Shaders.setUniformVec3 "viewPos" model.Camera.Position
     
-    //We're drawing with just vertices and no indicies, and it takes 36 verticies to have a six-sided textured cube
+    //We're drawing with just vertices and no indices, and it takes 36 vertices to have a six-sided textured cube
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
         0, 36u)

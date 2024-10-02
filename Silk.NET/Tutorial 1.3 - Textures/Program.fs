@@ -226,7 +226,7 @@ let onLoad (window:IWindow) : Model =
     // 3. We tell OpenGL that we want the GPU to store this data as RGBA formatted data on the GPU itself.
     // 4. The image's width.
     // 5. The image's height.
-    // 6. This is the image's border. This valu MUST be 0. It is a leftover component from legacy OpenGL, and
+    // 6. This is the image's border. This value MUST be 0. It is a leftover component from legacy OpenGL, and
     //    it serves no purpose.
     // 7. Our image data is formatted as RGBA data, therefore we must tell OpenGL we are uploading RGBA data.
     // 8. StbImageSharp returns this data as a byte[] array, therefore we must tell OpenGL we are uploading
@@ -247,12 +247,12 @@ let onLoad (window:IWindow) : Model =
     // This tells the GPU how it should sample the texture.
     
     // Set the texture wrap mode to repeat.
-    // The texture wrap mode defines what should happen when the texture coordinates go outside of the 0-1 range.
+    // The texture wrap mode defines what should happen when the texture coordinates go outside the 0-1 range.
     // In this case, we set it to repeat. The texture will just repeatedly tile over and over again.
     // You'll notice we're using S and T wrapping here. This is OpenGL's version of the standard UV mapping you
     // may be more used to, where S is on the X-axis, and T is on the Y-axis.
-    gl.TextureParameter (texture, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Repeat)
-    gl.TextureParameter (texture, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Repeat)
+    gl.TextureParameter (texture, TextureParameterName.TextureWrapS, int TextureWrapMode.Repeat)
+    gl.TextureParameter (texture, TextureParameterName.TextureWrapT, int TextureWrapMode.Repeat)
     
     // The min and mag filters define how the texture should be sampled as it resized.
     // The min, or minification filter, is used when the texture is reduced in size.
@@ -261,8 +261,8 @@ let onLoad (window:IWindow) : Model =
     // You can also use nearest (point) filtering, or anisotropic filtering, which is only available on the min
     // filter.
     // You may notice that the min filter defines a "mipmap" filter as well. We'll go over mipmaps below.
-    gl.TextureParameter (texture, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.LinearMipmapLinear)
-    gl.TextureParameter (texture, TextureParameterName.TextureMagFilter, (int) TextureMinFilter.Linear)
+    gl.TextureParameter (texture, TextureParameterName.TextureMinFilter, int TextureMinFilter.LinearMipmapLinear)
+    gl.TextureParameter (texture, TextureParameterName.TextureMagFilter, int TextureMinFilter.Linear)
     
     // Generate mipmaps for this texture.
     // Note: We MUST do this or the texture will appear as black (this is an option you can change but this is

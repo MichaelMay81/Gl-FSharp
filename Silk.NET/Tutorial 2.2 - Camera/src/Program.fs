@@ -125,7 +125,6 @@ let onRender (model:Model) (deltaTime:float) =
     shaderWerror <| Shaders.setUniformMat4 "uModel" modelMat
     shaderWerror <| Shaders.setUniformMat4 "uView" viewMat
     shaderWerror <| Shaders.setUniformMat4 "uProjection" projMat
-    |> ignore
     
     //We're drawing with just vertices and no indices, and it takes 36 vertices to have a six-sided textured cube
     model.Gl.DrawArrays (

@@ -83,7 +83,7 @@ let createVertexData (gl:GL) (vertices:float32[]) (indices:uint32[]) : VertexDat
         ReadOnlySpan<float32> vertices,
         BufferUsageARB.StaticDraw)
 
-    //Initializing a element buffer that holds the index data.
+    //Initializing an element buffer that holds the index data.
     let ebo = gl.GenBuffer () //Creating the buffer.
     gl.BindBuffer (BufferTargetARB.ElementArrayBuffer, ebo)  //Binding the buffer.
     gl.BufferData (
@@ -148,7 +148,7 @@ let onLoad (window:IWindow) : Model =
     let shader = createShaderProgram gl VertexShaderSource FragmentShaderSource
 
     //Tell opengl how to give the data to the shaders.
-    gl.VertexAttribPointer (0u, 3, VertexAttribPointerType.Float, false, (uint) (3 * sizeof<float32>), IntPtr.Zero.ToPointer ())
+    gl.VertexAttribPointer (0u, 3, VertexAttribPointerType.Float, false, uint (3 * sizeof<float32>), IntPtr.Zero.ToPointer ())
     gl.EnableVertexAttribArray 0u
 
     // Cleaning up.
