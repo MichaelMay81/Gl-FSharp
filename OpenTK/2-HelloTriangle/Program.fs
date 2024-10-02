@@ -4,11 +4,11 @@ open OpenTK.Windowing.Desktop
 
 open LearnOpenTK
 
-let nativeWindowSettings = NativeWindowSettings ()
-nativeWindowSettings.ClientSize <- Vector2i (800, 600)
-nativeWindowSettings.Title <- "LearnOpenTK - 2 Hello Triangle"
-// This is needed to run on macos
-nativeWindowSettings.Flags <- ContextFlags.ForwardCompatible
+let nativeWindowSettings = NativeWindowSettings (
+    ClientSize = Vector2i (800, 600),
+    Title = "LearnOpenTK - 2 Hello Triangle",
+    // This is needed to run on macos
+    Flags = ContextFlags.ForwardCompatible)
 
 let window = new GameWindow (GameWindowSettings.Default, nativeWindowSettings)
 
