@@ -46,7 +46,7 @@ let onLoad () : Result<Model, string> =
     let maxAttributeCount = GL.GetInteger GetPName.MaxVertexAttribs
     printfn "Maximum number of vertex attributes supported: %i" maxAttributeCount
 
-    Shaders.init "shader.vert" "shader.frag"
+    Shaders.init "Shaders/shader.vert" "Shaders/shader.frag"
     |> Result.map (fun shader ->
         shader |> Shaders.useProgram
         let timer = Stopwatch ()

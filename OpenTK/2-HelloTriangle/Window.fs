@@ -106,7 +106,7 @@ let onLoad () : Result<Model, string> =
     // Shaders are tiny programs that live on the GPU. OpenGL uses them to handle the vertex-to-pixel pipeline.
     // Check out the Shader class in Common to see how we create our shaders, as well as a more in-depth explanation of how shaders work.
     // shader.vert and shader.frag contain the actual shader code.
-    Shaders.init "shader.vert" "shader.frag"
+    Shaders.init "Shaders/shader.vert" "Shaders/shader.frag"
     |> Result.map (fun shader ->
         // Now, enable the shader.
         // Just like the VBO, this is global, so every function that uses a shader will modify this one until a new one is bound instead.

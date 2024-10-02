@@ -70,7 +70,7 @@ let onLoad () : Result<Model, string> =
         BufferUsageHint.StaticDraw)
     // The EBO has now been properly setup. Go to the Render function to see how we draw our rectangle now!
 
-    Shaders.init "shader.vert" "shader.frag"
+    Shaders.init "Shaders/shader.vert" "Shaders/shader.frag"
     |> Result.map (fun shader ->
         // Now, enable the shader.
         // Just like the VBO, this is global, so every function that uses a shader will modify this one until a new one is bound instead.

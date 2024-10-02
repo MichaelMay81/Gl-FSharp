@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Common\Common.fsproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shaders\" />
+  </ItemGroup>
+
 </Project>
