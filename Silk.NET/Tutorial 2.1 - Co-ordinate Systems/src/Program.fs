@@ -15,7 +15,7 @@ type Model = {
     Width: int
     Height: int
 
-    vbo: BufferObject<float32>
+    vbo: VertexBufferObject
     vao: VertexArrayObject
     Texture: Texture
     Shader: Shader
@@ -73,7 +73,7 @@ let keyDown (window:IWindow) (_:IKeyboard) (key:Key) (_:int) =
     | _ -> ()
 
 let onClose (model:Model) =
-    model.vbo |> BufferObjects.dispose
+    model.vbo.BufferObject |> BufferObjects.dispose
     model.vao |> VertexArrayObjects.dispose
     model.Shader |> Shaders.dispose
     model.Texture |> Textures.dispose
@@ -125,7 +125,7 @@ let onLoad (window:IWindow) : Model option =
     let gl = GL.GetApi window
     gl.Enable EnableCap.DepthTest
 
-    let vbo = BufferObjects.createFloat gl BufferTargetARB.ArrayBuffer vertices   
+    let vbo = BufferObjects.createVBO gl BufferTargetARB.ArrayBuffer vertices   
     let vao = VertexArrayObjects.create gl vbo None
     
     vao |> VertexArrayObjects.vertexAttributePointer 0u 3u 5u 0u
@@ -152,7 +152,7 @@ let onLoad (window:IWindow) : Model option =
             Width = window.Size.X
             Height = window.Size.Y } |> Some
     | _ ->
-        vbo |> BufferObjects.dispose
+        vbo.BufferObject |> BufferObjects.dispose
         vao |> VertexArrayObjects.dispose
         shaderOpt |> Option.iter Shaders.dispose
         textureOpt |> Option.iter Textures.dispose

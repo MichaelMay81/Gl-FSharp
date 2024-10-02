@@ -16,7 +16,7 @@ type Model = {
     Width: int
     Height: int
 
-    vbo: BufferObject<float32>
+    vbo: VertexBufferObject
     vao: VertexArrayObject
     LightingShader: Shader
     LampShader: Shader
@@ -84,7 +84,7 @@ let keyDown (window:IWindow) (_:IKeyboard) (key:Key) (_:int) =
     | _ -> ()
 
 let onClose (model:Model) =
-    model.vbo |> BufferObjects.dispose
+    model.vbo.BufferObject |> BufferObjects.dispose
     model.vao |> VertexArrayObjects.dispose
     model.LightingShader |> Shaders.dispose
     model.LampShader |> Shaders.dispose
@@ -165,7 +165,7 @@ let RenderLitCube (model:Model) =
     shaderWerror <| Shaders.setUniformVec3 "light.specular" Vector3.One
     shaderWerror <| Shaders.setUniformVec3 "light.position" (lampPosition model.StartTime)
 
-    //We're drawing with just vertices and no indicies, and it takes 36 verticies to have a six-sided textured cube
+    //We're drawing with just vertices and no indices, and it takes 36 vertices to have a six-sided textured cube
     model.Gl.DrawArrays (
         PrimitiveType.Triangles,
         0,
@@ -214,7 +214,7 @@ let onLoad (window:IWindow) : Model option =
     let gl = GL.GetApi window
     gl.Enable EnableCap.DepthTest
 
-    let vbo = BufferObjects.createFloat gl BufferTargetARB.ArrayBuffer vertices   
+    let vbo = BufferObjects.createVBO gl BufferTargetARB.ArrayBuffer vertices   
     let vao = VertexArrayObjects.create gl vbo None
     
     vao |> VertexArrayObjects.vertexAttributePointer 0u 3u 8u 0u
@@ -260,7 +260,7 @@ let onLoad (window:IWindow) : Model option =
                 LastMousePosition = None
                 StartTime = DateTime.UtcNow }
     | _ ->
-        vbo |> BufferObjects.dispose
+        vbo.BufferObject |> BufferObjects.dispose
         vao |> VertexArrayObjects.dispose
         lightingShaderOpt |> Option.iter Shaders.dispose
         lampShaderOpt |> Option.iter Shaders.dispose

@@ -11,8 +11,8 @@ type Model = {
     Keyboard: IKeyboard
 
     //Our new abstracted objects, here we specify what the types are.
-    vbo : BufferObject<float32>
-    ebo : BufferObject<uint>
+    vbo : VertexBufferObject
+    ebo : ElementBufferObject
     vao : VertexArrayObject
 
     Texture : Texture
@@ -36,8 +36,8 @@ let keyDown (window:IWindow) (_:IKeyboard) (key:Key) (_:int) =
 
 let onClose (model:Model) =
     //Remember to dispose all the instances.
-    model.vbo |> BufferObjects.dispose
-    model.ebo |> BufferObjects.dispose
+    model.vbo.BufferObject |> BufferObjects.dispose
+    model.ebo.BufferObject |> BufferObjects.dispose
     model.vao |> VertexArrayObjects.dispose
     model.Shader |> Shaders.dispose
     model.Texture |> Textures.dispose
@@ -65,8 +65,8 @@ let onLoad (window:IWindow) : Model option =
     let gl = GL.GetApi window
 
     //Instantiating our new abstractions
-    let ebo = BufferObjects.createUInt gl BufferTargetARB.ElementArrayBuffer indices
-    let vbo = BufferObjects.createFloat gl BufferTargetARB.ArrayBuffer vertices   
+    let ebo = BufferObjects.createEBO gl BufferTargetARB.ElementArrayBuffer indices
+    let vbo = BufferObjects.createVBO gl BufferTargetARB.ArrayBuffer vertices   
     let vao = VertexArrayObjects.create gl vbo (Some ebo)
     
     //Telling the VAO object how to lay out the attribute pointers
@@ -92,8 +92,8 @@ let onLoad (window:IWindow) : Model option =
                 Shader = shader
                 Texture = texture }
     | _ ->
-        vbo |> BufferObjects.dispose
-        ebo |> BufferObjects.dispose
+        vbo.BufferObject |> BufferObjects.dispose
+        ebo.BufferObject |> BufferObjects.dispose
         vao |> VertexArrayObjects.dispose
         shaderOpt |> Option.iter Shaders.dispose
         textureOpt |> Option.iter Textures.dispose

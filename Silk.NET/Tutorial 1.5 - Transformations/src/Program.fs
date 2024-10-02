@@ -13,8 +13,8 @@ type Model = {
     Gl : GL
     Keyboard: IKeyboard
 
-    vbo : BufferObject<float32>
-    ebo : BufferObject<uint>
+    vbo : VertexBufferObject
+    ebo : ElementBufferObject
     vao : VertexArrayObject
     Texture : Texture
     Shader : Shader
@@ -39,8 +39,8 @@ let keyDown (window:IWindow) (_:IKeyboard) (key:Key) (_:int) =
     | _ -> ()
 
 let onClose (model:Model) =
-    model.vbo |> BufferObjects.dispose
-    model.ebo |> BufferObjects.dispose
+    model.vbo.BufferObject |> BufferObjects.dispose
+    model.ebo.BufferObject |> BufferObjects.dispose
     model.vao |> VertexArrayObjects.dispose
     model.Shader |> Shaders.dispose
     model.Texture |> Textures.dispose
@@ -68,8 +68,8 @@ let onLoad (window:IWindow) : Model option =
 
     let gl = GL.GetApi window
 
-    let ebo = BufferObjects.createUInt gl BufferTargetARB.ElementArrayBuffer indices
-    let vbo = BufferObjects.createFloat gl BufferTargetARB.ArrayBuffer vertices   
+    let ebo = BufferObjects.createEBO gl BufferTargetARB.ElementArrayBuffer indices
+    let vbo = BufferObjects.createVBO gl BufferTargetARB.ArrayBuffer vertices   
     let vao = VertexArrayObjects.create gl vbo (Some ebo)
     
     vao |> VertexArrayObjects.vertexAttributePointer 0u 3u 5u 0u
@@ -109,8 +109,8 @@ let onLoad (window:IWindow) : Model option =
                 Texture = texture
                 Transforms = transforms }
     | _ ->
-        vbo |> BufferObjects.dispose
-        ebo |> BufferObjects.dispose
+        vbo.BufferObject |> BufferObjects.dispose
+        ebo.BufferObject |> BufferObjects.dispose
         vao |> VertexArrayObjects.dispose
         shaderOpt |> Option.iter Shaders.dispose
         textureOpt |> Option.iter Textures.dispose
