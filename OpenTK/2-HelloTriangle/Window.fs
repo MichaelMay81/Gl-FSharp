@@ -185,3 +185,14 @@ let private onUnload (model:Model) =
     GL.DeleteVertexArray model.VertexArrayObject
 
     GL.DeleteProgram model.Shader.Handle
+    
+let setup (window:GameWindow) =
+    window.add_UpdateFrame (onUpdateFrame window)
+    window.add_Resize (onResize window)
+
+    window.add_Load (fun _ ->
+        onLoad () |> function
+        | Ok model ->
+            window.add_RenderFrame (onRenderFrame window model)
+        | Error error ->
+            printfn "%s" error)

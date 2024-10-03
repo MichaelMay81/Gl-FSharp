@@ -11,15 +11,6 @@ let nativeWindowSettings = NativeWindowSettings (
     Flags = ContextFlags.ForwardCompatible)
 
 let window = new GameWindow (GameWindowSettings.Default, nativeWindowSettings)
-
-window.add_UpdateFrame (Window.onUpdateFrame window)
-window.add_Resize (Window.onResize window)
-
-window.add_Load (fun _ ->
-    Window.onLoad () |> function
-    | Ok model ->
-        window.add_RenderFrame (Window.onRenderFrame window model)
-    | Error error ->
-        printfn "%s" error)
+Window.setup window
 
 window.Run ()

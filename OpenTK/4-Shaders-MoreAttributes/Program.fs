@@ -4,22 +4,13 @@ open OpenTK.Windowing.Desktop
 
 open LearnOpenTK
 
-let nativeWindowSettings = NativeWindowSettings ()
-nativeWindowSettings.ClientSize <- Vector2i (800, 600)
-nativeWindowSettings.Title <- "LearnOpenTK - 4 Shaders More Attributes"
-// This is needed to run on macos
-nativeWindowSettings.Flags <- ContextFlags.ForwardCompatible
+let nativeWindowSettings = NativeWindowSettings (
+    ClientSize = Vector2i (800, 600),
+    Title = "LearnOpenTK - 4 Shaders More Attributes",
+    // This is needed to run on macos
+    Flags = ContextFlags.ForwardCompatible)
 
 let window = new GameWindow (GameWindowSettings.Default, nativeWindowSettings)
-
-window.add_UpdateFrame (Window.onUpdateFrame window)
-window.add_Resize (Window.onResize window)
-
-window.add_Load (fun _ ->
-    Window.onLoad () |> function
-    | Ok model ->
-        window.add_RenderFrame (Window.onRenderFrame window model)
-    | Error error ->
-        printfn "%s" error)
+Window.setup window
 
 window.Run ()

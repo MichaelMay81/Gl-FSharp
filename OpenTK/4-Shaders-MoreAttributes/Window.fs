@@ -64,7 +64,7 @@ let onLoad () : Result<Model, string> =
     let maxAttributeCount = GL.GetInteger GetPName.MaxVertexAttribs
     printfn "Maximum number of vertex attributes supported: %i" maxAttributeCount
 
-    Shaders.init "shader.vert" "shader.frag"
+    Shaders.init "Shaders/shader.vert" "Shaders/shader.frag"
     |> Result.map (fun shader ->
         shader |> Shaders.useProgram
 
@@ -89,3 +89,14 @@ let onUpdateFrame (window:GameWindow) (_:FrameEventArgs) =
 
 let onResize (window:GameWindow) (_:ResizeEventArgs) =
     GL.Viewport (0, 0, window.Size.X, window.Size.Y)
+    
+let setup (window:GameWindow) =
+    window.add_UpdateFrame (onUpdateFrame window)
+    window.add_Resize (onResize window)
+
+    window.add_Load (fun _ ->
+        onLoad () |> function
+        | Ok model ->
+            window.add_RenderFrame (onRenderFrame window model)
+        | Error error ->
+            printfn "%s" error)
