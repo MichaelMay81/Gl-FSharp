@@ -19,6 +19,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "4-Shaders-Uniforms", "4-Sha
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "5-Textures", "5-Textures\5-Textures.fsproj", "{F003BFF5-4DC2-424B-B41C-08926EFB88AC}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "6-MultipleTextures", "6-MultipleTextures\6-MultipleTextures.fsproj", "{25D05713-6D84-4E81-8B88-307B08DA4C14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{F003BFF5-4DC2-424B-B41C-08926EFB88AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F003BFF5-4DC2-424B-B41C-08926EFB88AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F003BFF5-4DC2-424B-B41C-08926EFB88AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25D05713-6D84-4E81-8B88-307B08DA4C14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25D05713-6D84-4E81-8B88-307B08DA4C14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25D05713-6D84-4E81-8B88-307B08DA4C14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25D05713-6D84-4E81-8B88-307B08DA4C14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
