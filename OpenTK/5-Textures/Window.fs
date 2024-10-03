@@ -1,7 +1,5 @@
 module LearnOpenTK.Window
 
-open System;
-open System.Diagnostics;
 open LearnOpenTK.Common
 open OpenTK.Graphics.OpenGL4
 open OpenTK.Windowing.Common
@@ -60,8 +58,6 @@ let onLoad () : Result<Model, string> =
     match shaderResult, textureResult with
     | Ok shader, Ok texture ->
         shader |> Shaders.useProgram
-        let timer = Stopwatch ()
-        timer.Start ()
 
         // Because there's now 5 floats between the start of the first vertex and the start of the second,
         // we modify the stride from 3 * sizeof(float) to 5 * sizeof(float).
