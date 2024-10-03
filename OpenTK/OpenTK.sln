@@ -21,6 +21,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "5-Textures", "5-Textures\5-
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "6-MultipleTextures", "6-MultipleTextures\6-MultipleTextures.fsproj", "{25D05713-6D84-4E81-8B88-307B08DA4C14}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "7-Transformations", "7-Transformations\7-Transformations.fsproj", "{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{25D05713-6D84-4E81-8B88-307B08DA4C14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25D05713-6D84-4E81-8B88-307B08DA4C14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25D05713-6D84-4E81-8B88-307B08DA4C14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
