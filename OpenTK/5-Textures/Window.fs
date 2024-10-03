@@ -53,7 +53,7 @@ let onLoad () : Result<Model, string> =
     // The shaders have been modified to include the texture coordinates, check them out after finishing the OnLoad function.
     let shaderResult = Shaders.init "Shaders/shader.vert" "Shaders/shader.frag"
 
-    let textureResult = Textures.loadFromFile "Resources/container.png"
+    let textureResult = Textures.loadFromFile "container.png"
 
     match shaderResult, textureResult with
     | Ok shader, Ok texture ->

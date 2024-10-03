@@ -59,12 +59,12 @@ let onLoad () : Result<Model, string> = Result.result {
     GL.EnableVertexAttribArray texCoordLocation
     GL.VertexAttribPointer (texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof<float32>, 3 * sizeof<float32>)
 
-    let! texture = Textures.loadFromFile "Resources/container.png"
+    let! texture = Textures.loadFromFile "container.png"
     // Texture units are explained in Texture.fs, at the Use function.
     // First texture goes in texture unit 0.
     texture |> Textures.useTexture TextureUnit.Texture0
     
-    let! texture2 = Textures.loadFromFile "Resources/awesomeface.png"
+    let! texture2 = Textures.loadFromFile "awesomeface.png"
     // Then, the second goes in texture unit 1.
     texture |> Textures.useTexture TextureUnit.Texture1
 

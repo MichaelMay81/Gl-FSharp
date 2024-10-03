@@ -9,7 +9,7 @@
   <ItemGroup>
     <Compile Include="Window.fs" />
     <Compile Include="Program.fs" />
-    <Content Include="**/*.vert; **/*.frag; **/*.png">
+    <Content Include="**/*.vert; **/*.frag; ../Resources/*.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
