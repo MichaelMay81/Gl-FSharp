@@ -85,8 +85,6 @@ let onLoad () : Result<Model, string> = Result.result {
 let onRenderFrame (window:GameWindow) (model:Model) (e:FrameEventArgs) =
     GL.Clear ClearBufferMask.ColorBufferBit
 
-    model.Shader |> Shaders.useProgram
-
     GL.BindVertexArray model.VertexBufferObject
 
     model.Texture |> Textures.useTexture TextureUnit.Texture0
