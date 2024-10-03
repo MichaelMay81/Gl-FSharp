@@ -23,6 +23,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "6-MultipleTextures", "6-Mul
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "7-Transformations", "7-Transformations\7-Transformations.fsproj", "{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "8-CoordinateSystems", "8-CoordinateSystems\8-CoordinateSystems.fsproj", "{FE266EB6-CA64-4C49-AA70-C16AA01676D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,9 @@ Global
 		{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD2A000E-F8F9-4677-AB45-5DC96EDB7263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE266EB6-CA64-4C49-AA70-C16AA01676D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE266EB6-CA64-4C49-AA70-C16AA01676D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE266EB6-CA64-4C49-AA70-C16AA01676D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE266EB6-CA64-4C49-AA70-C16AA01676D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
