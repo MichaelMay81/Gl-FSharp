@@ -16,6 +16,8 @@ module Textures =
         GL.BindTexture (TextureTarget.Texture2D, texture.Handle);
 
     let loadFromFile (path:string) : Result<Texture, string> =
+        let path = Path.Combine (System.AppContext.BaseDirectory, path)
+        
         // Generate handle
         let handle = GL.GenTexture ()
 

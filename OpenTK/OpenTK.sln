@@ -25,6 +25,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "7-Transformations", "7-Tran
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "8-CoordinateSystems", "8-CoordinateSystems\8-CoordinateSystems.fsproj", "{FE266EB6-CA64-4C49-AA70-C16AA01676D5}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "9-Camera", "9-Camera\9-Camera.fsproj", "{217F5F08-4819-4961-B19E-FA30D42F13C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,5 +80,9 @@ Global
 		{FE266EB6-CA64-4C49-AA70-C16AA01676D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE266EB6-CA64-4C49-AA70-C16AA01676D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE266EB6-CA64-4C49-AA70-C16AA01676D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{217F5F08-4819-4961-B19E-FA30D42F13C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{217F5F08-4819-4961-B19E-FA30D42F13C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{217F5F08-4819-4961-B19E-FA30D42F13C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{217F5F08-4819-4961-B19E-FA30D42F13C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

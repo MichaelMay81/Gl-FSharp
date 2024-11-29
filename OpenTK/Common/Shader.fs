@@ -114,6 +114,8 @@ module Shaders =
             Error $"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}"
 
     let private createShader (path:string) (shaderType:ShaderType) : Result<int, string> =
+        let path = Path.Combine (System.AppContext.BaseDirectory, path)
+        
         // Load shader and compile
         try File.ReadAllText path |> Ok
         with
